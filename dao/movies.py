@@ -1,4 +1,4 @@
-from dao.model.movies import Movies, MoviesSchema
+from dao.model.movies import Movies
 
 
 class MoviesDAO:
@@ -8,3 +8,13 @@ class MoviesDAO:
     def get_all(self):
         movies = Movies.query.all()
         return movies
+
+    def get_one(self, mid):
+        movie = Movies.query.get(mid)
+        return movie
+
+    def create(self, data):
+        movie = Movies(**data)
+        self.session.add(movie)
+        self.session.commit()
+        self.session.close()

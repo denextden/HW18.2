@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Resource, Namespace
 
 from dao.model.movies import MoviesSchema
@@ -13,5 +14,15 @@ class MoviesView(Resource):
         result = MoviesSchema(many=True).dump(movies)
         return result, 200
 
-    # def post(self):
-    #     return "", 201
+    def post(self):
+        data = request.get_json()
+        movies_service.create(data)
+        return "", 201
+
+
+@movies_ns.route('/<int:mid>')
+class MoviesView(Resource):
+    def get(self, mid):
+        movie = movies_service.get_one(mid)
+        result = MoviesSchema().dump(movie)
+        return result, 200
